@@ -260,6 +260,15 @@ export function show_generate_integration_url_modal(api_key: string): void {
 
             if (selected_integration_data?.config_options) {
                 render_config(selected_integration_data.config_options);
+                if (
+                    selected_integration_data.config_options.some(
+                        (option) => option.key === "channel_topic_mapping",
+                    )
+                ) {
+                    $("#stream-topic-options").hide();
+                } else {
+                    $("#stream-topic-options").show();
+                }
             }
 
             dropdown.hide();
