@@ -327,7 +327,7 @@ talon-core = { url = "https://github.com/zulip/talon/archive/e87a64dccc3c5ee1b8e
 # version from Git rather than a PyPI release. Keeping everything in one
 # repository simplifies the process of implementing and documenting new bots for
 # new contributors.
-zulip = { url = "https://github.com/zulip/python-zulip-api/archive/9e131ac626976b9c3da6c11b6365b4939656f7c3.zip", subdirectory = "zulip" }
+zulip = { url = "https://github.com/zulip/python-zulip-api/archive/3a2c96e64619ede769ceb5d32532a23e364f105f.zip", subdirectory = "zulip" }
 zulip-bots = { url = "https://github.com/zulip/python-zulip-api/archive/0.9.0.zip", subdirectory = "zulip_bots" }
 
 # zulip's linting framework - zulint
