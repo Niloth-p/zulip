@@ -147,9 +147,6 @@ class Integration:
             doc = self.DEFAULT_DOC_PATH.format(name=self.name)
         self.doc = doc
 
-    def is_enabled(self) -> bool:
-        return True
-
     def get_logo_path(self) -> str | None:
         logo_file_path_svg = self.DEFAULT_LOGO_STATIC_PATH_SVG.format(name=self.name)
         logo_file_path_png = self.DEFAULT_LOGO_STATIC_PATH_PNG.format(name=self.name)
