@@ -332,6 +332,16 @@ class GitlabHookTests(WebhookTestCase):
             expected_message,
         )
 
+    def test_merge_request_created_without_merge_request_title(self) -> None:
+        self.url = self.build_webhook_url(use_merge_request_title="false")
+        expected_topic_name = "my-awesome-project / MR #3"
+        expected_message = "Tomasz Kolek created [MR #3](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/3) from `tomek` to `master` (assigned to Tomasz Kolek):\n\n~~~ quote\ndescription of merge request\n~~~"
+        self.check_webhook(
+            "merge_request_hook__merge_request_created_with_assignee",
+            expected_topic_name,
+            expected_message,
+        )
+
     def test_merge_request_created_with_multiple_assignees_event_message(self) -> None:
         expected_topic_name = "Demo Project / MR #1 Make a trivial change to the README."
         expected_message = """
@@ -355,7 +365,7 @@ A trivial change that should probably be ignored.
             "merge_request_hook__merge_request_closed", expected_topic_name, expected_message
         )
 
-    def test_merge_request_closed_event_message_without_using_title(self) -> None:
+    def test_merge_request_closed_event_message_without_merge_request_title(self) -> None:
         expected_topic_name = "my-awesome-project / MR #2"
         expected_message = "Tomasz Kolek closed [MR #2](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/2)."
         self.url = self.build_webhook_url(use_merge_request_title="false")
@@ -420,6 +430,15 @@ A trivial change that should probably be ignored.
 
     def test_merge_request_merged_event_message(self) -> None:
         expected_topic_name = "my-awesome-project / MR #3 New Merge Request"
+        expected_message = "Tomasz Kolek merged [MR #3](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/3) from `tomek` to `master`."
+
+        self.check_webhook(
+            "merge_request_hook__merge_request_merged", expected_topic_name, expected_message
+        )
+
+    def test_merge_request_merged_event_message_without_merge_request_title(self) -> None:
+        self.url = self.build_webhook_url(use_merge_request_title="false")
+        expected_topic_name = "my-awesome-project / MR #3"
         expected_message = "Tomasz Kolek merged [MR #3](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/3) from `tomek` to `master`."
 
         self.check_webhook(
@@ -621,6 +640,16 @@ A trivial change that should probably be ignored.
 
     def test_system_merge_request_created_with_assignee_event_message(self) -> None:
         expected_topic_name = "my-awesome-project / MR #3 New Merge Request"
+        expected_message = "Tomasz Kolek created [MR #3](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/3) from `tomek` to `master` (assigned to Tomasz Kolek):\n\n~~~ quote\ndescription of merge request\n~~~"
+        self.check_webhook(
+            "system_hook__merge_request_created_with_assignee",
+            expected_topic_name,
+            expected_message,
+        )
+
+    def test_system_merge_request_created_without_merge_request_title(self) -> None:
+        self.url = self.build_webhook_url(use_merge_request_title="false")
+        expected_topic_name = "my-awesome-project / MR #3"
         expected_message = "Tomasz Kolek created [MR #3](https://gitlab.com/tomaszkolek0/my-awesome-project/merge_requests/3) from `tomek` to `master` (assigned to Tomasz Kolek):\n\n~~~ quote\ndescription of merge request\n~~~"
         self.check_webhook(
             "system_hook__merge_request_created_with_assignee",
