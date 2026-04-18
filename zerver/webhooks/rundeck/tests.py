@@ -6,7 +6,7 @@ from zerver.lib.test_classes import WebhookTestCase
 
 
 class RundeckHookTests(WebhookTestCase):
-    TOPIC_NAME = "Global Log Filter Usage"
+    TOPIC_NAME = "welcome-project-community - Global Log Filter Usage"
 
     def test_start_message(self) -> None:
         expected_message = ":running: [Global Log Filter Usage](http://localhost:4440/project/welcome-project-community/job/show/a0296d93-4b10-48d7-8b7d-86ad3f603b85) execution [#3](http://localhost:4440/project/welcome-project-community/execution/show/3) for welcome-project-community has started."
@@ -49,7 +49,7 @@ class RundeckHookTests(WebhookTestCase):
         )
 
     def test_scheduled_start_message(self) -> None:
-        expected_message = ":clock: [Global Log Filter Usage](https://rundeck.com/project/myproject/job/show/a0296d93-4b10-48d7-8b7d-86ad3f603b85) execution [#12](https://rundeck.com/project/myproject/execution/follow/12) for myproject is scheduled."
+        expected_message = ":clock: [Global Log Filter Usage](https://rundeck.com/project/myproject/job/show/a0296d93-4b10-48d7-8b7d-86ad3f603b85) execution [#12](https://rundeck.com/project/myproject/execution/follow/12) for welcome-project-community is scheduled."
 
         self.check_webhook(
             "scheduled_start",
