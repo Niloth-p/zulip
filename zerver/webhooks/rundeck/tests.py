@@ -1,3 +1,7 @@
+from unittest.mock import patch
+
+import orjson
+
 from zerver.lib.test_classes import WebhookTestCase
 
 
@@ -53,3 +57,21 @@ class RundeckHookTests(WebhookTestCase):
             expected_message,
             content_type="application/x-www-form-urlencoded",
         )
+
+    def test_message_with_custom_status(self) -> None:
+        def custom_get_payload(fixture_name: str) -> str:
+            payload = orjson.loads(self.webhook_fixture_data(self.webhook_dir_name, fixture_name))
+            payload["status"] = "other"
+            payload["execution"]["status"] = "other"
+            payload["execution"]["customStatus"] = "waiting for approval"
+            return orjson.dumps(payload).decode()
+
+        expected_message = "[Global Log Filter Usage](http://localhost:4440/project/welcome-project-community/job/show/a0296d93-4b10-48d7-8b7d-86ad3f603b85) execution [#7](http://localhost:4440/project/welcome-project-community/execution/show/7) for welcome-project-community has status: waiting for approval."
+
+        with patch.object(self, "get_payload", side_effect=custom_get_payload):
+            self.check_webhook(
+                "failure",
+                RundeckHookTests.TOPIC_NAME,
+                expected_message,
+                content_type="application/x-www-form-urlencoded",
+            )

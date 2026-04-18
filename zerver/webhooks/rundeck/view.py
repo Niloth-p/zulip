@@ -43,6 +43,10 @@ def get_body(payload: WildValue, execution: WildValue, job_name: str) -> str:
     status_raw = execution["status"].tame(check_string)
     status_text, emoji = STATUS_MAP.get(status_raw, (f"is {status_raw}", ""))
 
+    if status_raw == "other":
+        custom_status = execution["customStatus"].tame(check_string)
+        status_text = f"has status: {custom_status}"
+
     if status_raw == "running" and payload["trigger"].tame(check_string) == "avgduration":
         status_text = "is running long"
         emoji = ":time_ticking:"
