@@ -7,12 +7,17 @@ from zerver.lib.validator import WildValue, check_int, check_string
 from zerver.lib.webhooks.common import check_send_webhook_message
 from zerver.models import UserProfile
 
-RUNDECK_MESSAGE_TEMPLATE = "[{job_name}]({job_link}) execution [#{execution_id}]({execution_link}) for {project_name} {status}. {emoji}"
+RUNDECK_MESSAGE_TEMPLATE = "{emoji}[{job_name}]({job_link}) execution [#{execution_id}]({execution_link}) for {project_name} {status}."
+
+# https://docs.rundeck.com/docs/api/#listing-running-executions:~:text=The%20%5Bstatus%5D,the%20exit%20status.
 STATUS_MAP = {
-    "failed": ("has failed", ":cross_mark:"),
+    "failed": ("has failed", ":warning:"),
     "succeeded": ("has succeeded", ":check:"),
     "running": ("has started", ":running:"),
-    "scheduled": ("has started", ":running:"),
+    "scheduled": ("is scheduled", ":clock:"),
+    "aborted": ("was aborted", ":no_entry:"),
+    "timedout": ("timed out", ":times_up:"),
+    "failed-with-retry": ("failed and will retry", ":repeat:"),
 }
 
 
@@ -49,5 +54,5 @@ def get_body(payload: WildValue, execution: WildValue, job_name: str) -> str:
         execution_link=execution["href"].tame(check_string),
         project_name=execution["project"].tame(check_string),
         status=status_text,
-        emoji=emoji,
+        emoji=f"{emoji} " if emoji else "",
     )
